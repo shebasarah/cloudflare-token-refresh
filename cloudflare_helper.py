@@ -48,7 +48,7 @@ class CloudflareHelper:
     def get_api_key(self):
         """Method to get the API Key."""
 
-        secret_name = "nzh-cf-access-token-to-modify-transform-rules"
+        secret_name = "cf-access-token-to-modify-transform-rules"
         region_name = "ap-southeast-2"
 
         # Create a Secrets Manager client

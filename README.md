@@ -1,18 +1,18 @@
 # Rotation of AWS Secrets
 ## Project Description
-The NZH Authoring tool application supplements the Composer with a set of additional authoring helper tools. This application includes APIs that can be called via the Arc Composer to send stories to NZH print publishing systems. The security of these API calls is critical to prevent any unsolicited access to the NZ Herald print publishing system. For this purpose, it is important to ensure that requests to the NZH Authoring tool go through Cloudflare before propagating to the Application Load Balancer (ALB) in AWS. When the API call reaches Cloudflare, a secret TOKEN header is added to the request. This token is then verified at the ALB before it reaches the NZH Authoring tool application.
+The Authoring tool application supplements the Composer with a set of additional authoring helper tools. This application includes APIs that can be called via the Arc Composer to send stories to print publishing systems. The security of these API calls is critical to prevent any unsolicited access to the print publishing system. For this purpose, it is important to ensure that requests to the  Authoring tool go through Cloudflare before propagating to the Application Load Balancer (ALB) in AWS. When the API call reaches Cloudflare, a secret TOKEN header is added to the request. This token is then verified at the ALB before it reaches the Authoring tool application.
 
 
 The lambda function rotates this secret token in AWS Secret Manager periodically and updates them in the Cloudflare Header modification rule and the Application Load Balancer Listener Rule. Periodic rotation of tokens prevents them from being hardcoded and prevents any unsolicited access to the print publishing system.
 
-![Proposed Solution](image/AWS-Solution.png)
+![Proposed Solution](image/solution.png)
 
 ## Instructions
 
 ### Amazon ECR Set Up
 1. Create a new ECR repository with a concise name and private visibility setting.
 2. Use the push commands available on the top right corner of the repository to:
-    1. Retrieve an authentication token and authenticate your Docker client to your registry. This step will require assuming a role to gt access to the NZH AWS account. Multifactor Authentication is also enabled.
+    1. Retrieve an authentication token and authenticate your Docker client to your registry. This step will require assuming a role to get access to the Company's AWS account. Multifactor Authentication is also enabled.
     2. Build your Docker image.
     3. Tag the image.
     4. Push the image to the newly created AWS repository.
@@ -34,7 +34,7 @@ aws_secret_access_key = temp_secret_access_key
 aws_session_token =temp_session_token
 
 ```
-3. Using the new profile assume the *nzh-developer* role using the command:
+3. Using the new profile assume the *developer* role using the command:
 ```
 aws sts assume-role --role-arn "arn of the iam role" --role-session-name AWSCLI-Session --profile mfa
 ```
@@ -97,7 +97,7 @@ aws ecr get-login-password --profile session --region ap-southeast-2 | docker lo
 Use the following command in the ```cloudflare-alb-token-refresh``` directory: 
 
   ```
-  docker build -t nzh-cf-token-rotation-lambda . 
+  docker build -t cf-token-rotation-lambda . 
   ```
 
 ### Run Unit Tests

@@ -34,7 +34,7 @@ class LoadbalancerHelper:
                         "Field": "host-header",
                         "HostHeaderConfig": {
                             "Values": [
-                                "sandbox-authoringtools.nzherald.co.nz",
+                                "sandbox-authoringtools.company.co.nz",
                             ]
                         },
                     },
